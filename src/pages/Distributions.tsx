@@ -94,7 +94,7 @@ const Distributions = () => {
   };
 
   const getPageTitle = () => {
-    return userRole === "donor" ? "My Distributions" : "Received Donations";
+    return userRole === "donor" ? "Distribution History" : "My Allocations";
   };
 
   return (
@@ -190,7 +190,7 @@ const Distributions = () => {
         <div className="relative w-full sm:w-64">
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder={userRole === "donor" ? "Search distributions..." : "Search received donations..."}
+            placeholder={userRole === "donor" ? "Search distributions..." : "Search allocations..."}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="pl-8"

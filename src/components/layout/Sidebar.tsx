@@ -1,6 +1,6 @@
 
 import { NavLink } from "react-router-dom";
-import { Home, Package, Users, User, Settings } from "lucide-react";
+import { Home, Package, Box, User, Settings } from "lucide-react";
 import { useSidebar } from "./SidebarProvider";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
@@ -84,7 +84,7 @@ export function Sidebar() {
             >
               <Package className="h-5 w-5" />
               {sidebarOpen && (
-                <span>{userRole === "donor" ? "My Donations" : "Available Food"}</span>
+                <span>{userRole === "donor" ? "Food Inventory" : "Available Food"}</span>
               )}
             </NavLink>
           </li>
@@ -101,9 +101,9 @@ export function Sidebar() {
                 )
               }
             >
-              <Users className="h-5 w-5" />
+              <Box className="h-5 w-5" />
               {sidebarOpen && (
-                <span>{userRole === "donor" ? "My Distributions" : "Received Donations"}</span>
+                <span>{userRole === "donor" ? "Distribution History" : "My Allocations"}</span>
               )}
             </NavLink>
           </li>

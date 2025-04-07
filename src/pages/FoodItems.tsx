@@ -77,7 +77,7 @@ const FoodItems = () => {
   };
   
   const getPageTitle = () => {
-    return userRole === "donor" ? "My Donations" : "Available Food Items";
+    return userRole === "donor" ? "Food Inventory" : "Available Food Items";
   };
   
   return (
@@ -91,12 +91,12 @@ const FoodItems = () => {
             <DialogTrigger asChild>
               <Button className="bg-food-green-600 hover:bg-food-green-700">
                 <PlusCircle className="mr-2 h-4 w-4" />
-                Add New Donation
+                Add New Food Item
               </Button>
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>Add New Donation</DialogTitle>
+                <DialogTitle>Add New Food Item</DialogTitle>
                 <DialogDescription>Fill in the details to add a new food item for donation.</DialogDescription>
               </DialogHeader>
               <form onSubmit={handleSubmit}>
@@ -164,7 +164,7 @@ const FoodItems = () => {
         <div className="relative w-full sm:w-64">
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder={userRole === "donor" ? "Search my donations..." : "Search available food..."}
+            placeholder={userRole === "donor" ? "Search inventory..." : "Search available food..."}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="pl-8"
