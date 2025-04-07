@@ -1,11 +1,22 @@
 
 import { NavLink } from "react-router-dom";
-import { Home, PlusCircle, Calendar, Settings, User, Users, Package } from "lucide-react";
+import { Home, Package, Users, User, Settings } from "lucide-react";
 import { useSidebar } from "./SidebarProvider";
 import { cn } from "@/lib/utils";
+import { useEffect, useState } from "react";
 
 export function Sidebar() {
   const { sidebarOpen, toggleSidebar } = useSidebar();
+  const [userRole, setUserRole] = useState<string>("donor"); // Default role
+  
+  useEffect(() => {
+    // Get user role from localStorage
+    const userString = localStorage.getItem("user");
+    if (userString) {
+      const user = JSON.parse(userString);
+      setUserRole(user.role);
+    }
+  }, []);
 
   return (
     <aside
@@ -58,6 +69,8 @@ export function Sidebar() {
               {sidebarOpen && <span>Dashboard</span>}
             </NavLink>
           </li>
+          
+          {/* Food Items - visible to all but labeled differently */}
           <li>
             <NavLink
               to="/food-items"
@@ -70,9 +83,13 @@ export function Sidebar() {
               }
             >
               <Package className="h-5 w-5" />
-              {sidebarOpen && <span>Food Items</span>}
+              {sidebarOpen && (
+                <span>{userRole === "donor" ? "My Donations" : "Available Food"}</span>
+              )}
             </NavLink>
           </li>
+          
+          {/* Distributions - visible to all but labeled differently */}
           <li>
             <NavLink
               to="/distributions"
@@ -85,9 +102,12 @@ export function Sidebar() {
               }
             >
               <Users className="h-5 w-5" />
-              {sidebarOpen && <span>Distributions</span>}
+              {sidebarOpen && (
+                <span>{userRole === "donor" ? "My Distributions" : "Received Donations"}</span>
+              )}
             </NavLink>
           </li>
+          
           <li>
             <NavLink
               to="/profile"

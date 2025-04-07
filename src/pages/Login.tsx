@@ -5,11 +5,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "sonner";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState("donor"); // Default role is donor
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   
@@ -20,9 +22,20 @@ const Login = () => {
     // Simulate login - would connect to backend in real implementation
     setTimeout(() => {
       // Mock successful login
-      localStorage.setItem("user", JSON.stringify({ name: "John Doe", email, role: "donor" }));
+      localStorage.setItem("user", JSON.stringify({ 
+        name: "John Doe", 
+        email, 
+        role // Save the selected role
+      }));
       toast.success("Login successful!");
-      navigate("/");
+      
+      // Redirect based on role
+      if (role === "donor") {
+        navigate("/food-items");
+      } else {
+        navigate("/distributions");
+      }
+      
       setIsLoading(false);
     }, 1000);
   };
@@ -67,6 +80,24 @@ const Login = () => {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                 />
+              </div>
+              
+              <div className="space-y-2">
+                <Label>I am a:</Label>
+                <RadioGroup
+                  value={role}
+                  onValueChange={setRole}
+                  className="flex flex-col space-y-1"
+                >
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="donor" id="donor" />
+                    <Label htmlFor="donor">Food Donor</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="recipient" id="recipient" />
+                    <Label htmlFor="recipient">NGO / Recipient</Label>
+                  </div>
+                </RadioGroup>
               </div>
             </CardContent>
             <CardFooter className="flex flex-col">

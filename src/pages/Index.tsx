@@ -7,12 +7,20 @@ const Index = () => {
   
   useEffect(() => {
     // Check if user is logged in
-    const user = localStorage.getItem("user");
+    const userString = localStorage.getItem("user");
     
-    if (user) {
-      navigate("/"); // Keep on dashboard if already logged in
+    if (userString) {
+      const user = JSON.parse(userString);
+      // Redirect based on user role
+      if (user.role === "donor") {
+        navigate("/food-items"); // Donors primarily manage food items
+      } else if (user.role === "recipient") {
+        navigate("/distributions"); // Recipients primarily track distributions
+      } else {
+        navigate("/"); // Default dashboard for other roles
+      }
     } else {
-      navigate("/login"); // Redirect to login
+      navigate("/login"); // Redirect to login if not logged in
     }
   }, [navigate]);
   
