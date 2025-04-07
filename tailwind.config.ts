@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,7 +62,34 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+				// Custom food donation app colors
+				"food-green": {
+					50: "#f2fbf4",
+					100: "#e1f7e6",
+					200: "#c4edcd",
+					300: "#95dba6",
+					400: "#61c277",
+					500: "#3ea456",
+					600: "#2c8642",
+					700: "#256a37",
+					800: "#22552f",
+					900: "#1d472a",
+					950: "#0c2615",
+				},
+				"food-orange": {
+					50: "#fff7ed",
+					100: "#ffeed5",
+					200: "#fdd8ab",
+					300: "#fbbe74",
+					400: "#f99939",
+					500: "#f67913",
+					600: "#e05c09",
+					700: "#ba450c",
+					800: "#973812",
+					900: "#7c3012",
+					950: "#431506",
+				},
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -84,11 +112,21 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'fade-in': {
+					from: { opacity: '0' },
+					to: { opacity: '1' }
+				},
+				'slide-up': {
+					from: { transform: 'translateY(10px)', opacity: '0' },
+					to: { transform: 'translateY(0)', opacity: '1' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'fade-in': 'fade-in 0.5s ease-out',
+				'slide-up': 'slide-up 0.5s ease-out'
 			}
 		}
 	},
