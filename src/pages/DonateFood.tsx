@@ -7,8 +7,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
+import { donateFood } from "@/services/api";
+import { useNavigate } from "react-router-dom";
 
 const DonateFood = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     foodName: "",
     quantity: "",
@@ -27,32 +30,40 @@ const DonateFood = () => {
     setFormData((prev) => ({ ...prev, foodType: value }));
   };
   
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Check if user is logged in
+    const token = localStorage.getItem("token");
+    if (!token) {
+      toast.error("You must be logged in to donate food");
+      navigate("/login");
+      return;
+    }
+    
     setIsSubmitting(true);
     
-    // Simulate form submission - would connect to backend in real implementation
-    setTimeout(() => {
-      // In a real app, this would save to a database
-      const existingDonations = JSON.parse(localStorage.getItem("foodDonations") || "[]");
-      const newDonation = {
-        id: Date.now(),
-        ...formData,
-        donationDate: new Date().toISOString()
-      };
+    try {
+      const success = await donateFood(formData);
       
-      localStorage.setItem("foodDonations", JSON.stringify([...existingDonations, newDonation]));
-      
-      toast.success("Food donation submitted successfully!");
-      setFormData({
-        foodName: "",
-        quantity: "",
-        foodType: "veg",
-        expiryDate: "",
-        address: ""
-      });
+      if (success) {
+        toast.success("Food donation submitted successfully!");
+        setFormData({
+          foodName: "",
+          quantity: "",
+          foodType: "veg",
+          expiryDate: "",
+          address: ""
+        });
+        
+        // Navigate to the food items page to see all donations
+        navigate("/food-items");
+      }
+    } catch (error) {
+      console.error("Donation error:", error);
+    } finally {
       setIsSubmitting(false);
-    }, 1000);
+    }
   };
   
   return (

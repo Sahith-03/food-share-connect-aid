@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
+import { login } from "@/services/api";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -17,17 +18,22 @@ const Login = () => {
     e.preventDefault();
     setIsLoading(true);
     
-    // Simulate login - would connect to backend in real implementation
-    setTimeout(() => {
-      // Mock successful login
-      localStorage.setItem("user", JSON.stringify({ 
-        name: "User", 
-        email
-      }));
-      toast.success("Login successful!");
-      navigate("/food-items");
+    try {
+      const response = await login({ email, password });
+      
+      if (response) {
+        // Store token and user data
+        localStorage.setItem("token", response.token);
+        localStorage.setItem("user", JSON.stringify(response.user));
+        
+        toast.success("Login successful!");
+        navigate("/food-items");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+    } finally {
       setIsLoading(false);
-    }, 1000);
+    }
   };
   
   return (

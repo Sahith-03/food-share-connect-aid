@@ -5,32 +5,21 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-
-type FoodDonation = {
-  id: number;
-  foodName: string;
-  quantity: string;
-  foodType: string;
-  expiryDate: string;
-  address: string;
-  donationDate: string;
-};
+import { FoodItem, getAllFoods } from "@/services/api";
+import { useQuery } from "@tanstack/react-query";
 
 const FoodItems = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [typeFilter, setTypeFilter] = useState("all");
-  const [donations, setDonations] = useState<FoodDonation[]>([]);
   
-  useEffect(() => {
-    // Load donations from localStorage
-    const storedDonations = localStorage.getItem("foodDonations");
-    if (storedDonations) {
-      setDonations(JSON.parse(storedDonations));
-    }
-  }, []);
+  // Use React Query to fetch and cache food items
+  const { data: foodItems = [], isLoading, error } = useQuery({
+    queryKey: ['foods'],
+    queryFn: getAllFoods
+  });
 
   // Filter items based on search and type filter
-  const filteredItems = donations.filter(item => {
+  const filteredItems = foodItems.filter(item => {
     const matchesSearch = item.foodName.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesType = typeFilter === "all" || item.foodType === typeFilter;
     
@@ -40,13 +29,11 @@ const FoodItems = () => {
   const formatDate = (dateString: string) => {
     if (!dateString) return "N/A";
     
-    if (dateString.includes("T")) {
-      // Handle ISO format (from donationDate)
+    try {
       return new Date(dateString).toLocaleDateString();
+    } catch (error) {
+      return dateString;
     }
-    
-    // Handle YYYY-MM-DD format (from expiryDate)
-    return new Date(dateString).toLocaleDateString();
   };
   
   return (
@@ -83,52 +70,71 @@ const FoodItems = () => {
         </div>
       </div>
       
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {filteredItems.map(item => (
-          <Card key={item.id} className="food-donation-card">
-            <CardHeader>
-              <CardTitle className="flex justify-between items-start">
-                <span>{item.foodName}</span>
-                <span className={`inline-block px-2 py-1 text-xs rounded-full ${
-                  item.foodType === 'veg' ? 'bg-green-100 text-green-800' : 'bg-orange-100 text-orange-800'
-                }`}>
-                  {item.foodType === 'veg' ? 'Vegetarian' : 'Non-Vegetarian'}
-                </span>
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                <div className="flex justify-between">
-                  <span className="text-sm text-muted-foreground">Quantity:</span>
-                  <span className="text-sm font-medium">{item.quantity}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-sm text-muted-foreground">Expiry Date:</span>
-                  <span className="text-sm font-medium">{formatDate(item.expiryDate)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-sm text-muted-foreground">Donated On:</span>
-                  <span className="text-sm font-medium">{formatDate(item.donationDate)}</span>
-                </div>
-              </div>
-            </CardContent>
-            <CardFooter>
-              <Button variant="outline" className="w-full">View Details</Button>
-            </CardFooter>
-          </Card>
-        ))}
-        
-        {filteredItems.length === 0 && (
-          <div className="col-span-full text-center py-12">
-            <h3 className="text-lg font-medium">No food items found</h3>
-            <p className="text-muted-foreground">
-              {donations.length === 0 
-                ? "No food donations have been submitted yet." 
-                : "Try adjusting your search or filters"}
-            </p>
+      {isLoading && (
+        <div className="flex justify-center items-center py-12">
+          <div className="text-center">
+            <p className="text-lg font-medium">Loading food donations...</p>
           </div>
-        )}
-      </div>
+        </div>
+      )}
+      
+      {error && (
+        <div className="flex justify-center items-center py-12">
+          <div className="text-center">
+            <p className="text-lg font-medium text-red-500">Error loading donations</p>
+            <p className="text-muted-foreground">Please try again later</p>
+          </div>
+        </div>
+      )}
+      
+      {!isLoading && !error && (
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {filteredItems.map(item => (
+            <Card key={item._id} className="food-donation-card">
+              <CardHeader>
+                <CardTitle className="flex justify-between items-start">
+                  <span>{item.foodName}</span>
+                  <span className={`inline-block px-2 py-1 text-xs rounded-full ${
+                    item.foodType === 'veg' ? 'bg-green-100 text-green-800' : 'bg-orange-100 text-orange-800'
+                  }`}>
+                    {item.foodType === 'veg' ? 'Vegetarian' : 'Non-Vegetarian'}
+                  </span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-2">
+                  <div className="flex justify-between">
+                    <span className="text-sm text-muted-foreground">Quantity:</span>
+                    <span className="text-sm font-medium">{item.quantity}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sm text-muted-foreground">Expiry Date:</span>
+                    <span className="text-sm font-medium">{formatDate(item.expiryDate)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sm text-muted-foreground">Donated On:</span>
+                    <span className="text-sm font-medium">{formatDate(item.donationDate)}</span>
+                  </div>
+                </div>
+              </CardContent>
+              <CardFooter>
+                <Button variant="outline" className="w-full">View Details</Button>
+              </CardFooter>
+            </Card>
+          ))}
+          
+          {filteredItems.length === 0 && !isLoading && (
+            <div className="col-span-full text-center py-12">
+              <h3 className="text-lg font-medium">No food items found</h3>
+              <p className="text-muted-foreground">
+                {foodItems.length === 0 
+                  ? "No food donations have been submitted yet." 
+                  : "Try adjusting your search or filters"}
+              </p>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };

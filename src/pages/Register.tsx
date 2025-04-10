@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
+import { register } from "@/services/api";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -33,12 +34,23 @@ const Register = () => {
     
     setIsLoading(true);
     
-    // Simulate registration - would connect to backend in real implementation
-    setTimeout(() => {
-      toast.success("Registration successful! Please login.");
-      navigate("/login");
+    try {
+      const success = await register({
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        password: formData.password
+      });
+      
+      if (success) {
+        toast.success("Registration successful! Please login.");
+        navigate("/login");
+      }
+    } catch (error) {
+      console.error("Registration error:", error);
+    } finally {
       setIsLoading(false);
-    }, 1000);
+    }
   };
   
   return (
