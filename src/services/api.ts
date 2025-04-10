@@ -35,10 +35,11 @@ export interface RegisterRequest {
 
 export interface FoodDonationRequest {
   foodName: string;
+  foodTag: string;
   quantity: string;
-  foodType: string;
   expiryDate: string;
   address: string;
+  email: string;
 }
 
 const API_BASE_URL = "https://food-donation-backend-9z3j.onrender.com/api";

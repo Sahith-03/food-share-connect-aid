@@ -14,10 +14,11 @@ const DonateFood = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     foodName: "",
+    foodTag: "veg", // Changed from foodType to foodTag
     quantity: "",
-    foodType: "veg",
     expiryDate: "",
-    address: ""
+    address: "",
+    email: "", // Added email field
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   
@@ -27,7 +28,7 @@ const DonateFood = () => {
   };
   
   const handleRadioChange = (value: string) => {
-    setFormData((prev) => ({ ...prev, foodType: value }));
+    setFormData((prev) => ({ ...prev, foodTag: value })); // Changed from foodType to foodTag
   };
   
   const handleSubmit = async (e: React.FormEvent) => {
@@ -50,10 +51,11 @@ const DonateFood = () => {
         toast.success("Food donation submitted successfully!");
         setFormData({
           foodName: "",
+          foodTag: "veg", // Changed from foodType to foodTag
           quantity: "",
-          foodType: "veg",
           expiryDate: "",
-          address: ""
+          address: "",
+          email: "", // Reset email field
         });
         
         // Navigate to the food items page to see all donations
@@ -104,7 +106,7 @@ const DonateFood = () => {
             <div className="space-y-2">
               <Label>Food Type</Label>
               <RadioGroup
-                value={formData.foodType}
+                value={formData.foodTag}
                 onValueChange={handleRadioChange}
                 className="flex space-x-4"
               >
@@ -140,6 +142,19 @@ const DonateFood = () => {
                 value={formData.address}
                 onChange={handleChange}
                 className="min-h-[100px]"
+                required
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="email">Contact Email</Label>
+              <Input
+                id="email"
+                name="email"
+                type="email"
+                placeholder="your@email.com"
+                value={formData.email}
+                onChange={handleChange}
                 required
               />
             </div>
