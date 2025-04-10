@@ -29,7 +29,7 @@ export interface LoginResponse {
 export interface RegisterRequest {
   name: string;
   email: string;
-  phone: string;
+  number: string;
   password: string;
 }
 
@@ -55,7 +55,7 @@ const handleApiError = (error: any): string => {
 // Get all food donations
 export const getAllFoods = async (): Promise<FoodItem[]> => {
   try {
-    const response = await fetch(`${API_BASE_URL}/allfoods/api/allfoods`);
+    const response = await fetch(`${API_BASE_URL}/allfoods`);
     
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);

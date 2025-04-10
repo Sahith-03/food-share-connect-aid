@@ -12,7 +12,7 @@ const Register = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    phone: "",
+    number: "", // Changed from 'phone' to 'number' to match the API requirement
     password: "",
     confirmPassword: ""
   });
@@ -38,7 +38,7 @@ const Register = () => {
       const success = await register({
         name: formData.name,
         email: formData.email,
-        phone: formData.phone,
+        number: formData.number, // Using 'number' instead of 'phone'
         password: formData.password
       });
       
@@ -95,13 +95,13 @@ const Register = () => {
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="phone">Phone Number</Label>
+                <Label htmlFor="number">Phone Number</Label>
                 <Input 
-                  id="phone"
-                  name="phone"
+                  id="number"
+                  name="number"
                   type="tel" 
                   placeholder="123-456-7890"
-                  value={formData.phone}
+                  value={formData.number}
                   onChange={handleChange}
                   required
                 />
