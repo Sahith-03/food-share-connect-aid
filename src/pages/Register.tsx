@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "sonner";
 
 const Register = () => {
@@ -14,8 +13,7 @@ const Register = () => {
     email: "",
     phone: "",
     password: "",
-    confirmPassword: "",
-    role: "donor"
+    confirmPassword: ""
   });
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
@@ -23,10 +21,6 @@ const Register = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-  
-  const handleRoleChange = (value: string) => {
-    setFormData((prev) => ({ ...prev, role: value }));
   };
   
   const handleSubmit = async (e: React.FormEvent) => {
@@ -99,28 +93,6 @@ const Register = () => {
                   onChange={handleChange}
                   required
                 />
-              </div>
-              
-              <div className="space-y-2">
-                <Label>I am a</Label>
-                <RadioGroup 
-                  value={formData.role} 
-                  onValueChange={handleRoleChange}
-                  className="flex space-x-2"
-                >
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="donor" id="donor" />
-                    <Label htmlFor="donor">Donor</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="recipient" id="recipient" />
-                    <Label htmlFor="recipient">Recipient</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="volunteer" id="volunteer" />
-                    <Label htmlFor="volunteer">Volunteer</Label>
-                  </div>
-                </RadioGroup>
               </div>
               
               <div className="space-y-2">
