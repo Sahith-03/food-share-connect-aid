@@ -5,7 +5,7 @@ import { toast } from "sonner";
 export interface FoodItem {
   _id: string;
   foodName: string;
-  quantity: string;
+  quantity: number; // Changed from string to number
   foodType: string;
   expiryDate: string;
   address: string;
@@ -36,7 +36,7 @@ export interface RegisterRequest {
 export interface FoodDonationRequest {
   foodName: string;
   foodTag: string;
-  quantity: string;
+  quantity: number; // Changed from string to number
   expiryDate: string;
   address: string;
   email: string;

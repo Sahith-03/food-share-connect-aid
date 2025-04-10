@@ -14,21 +14,28 @@ const DonateFood = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     foodName: "",
-    foodTag: "veg", // Changed from foodType to foodTag
-    quantity: "",
+    foodTag: "veg",
+    quantity: 0, // Changed from string to number
     expiryDate: "",
     address: "",
-    email: "", // Added email field
+    email: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    
+    // Convert quantity to number if the input name is quantity
+    if (name === "quantity") {
+      const numValue = parseFloat(value) || 0;
+      setFormData((prev) => ({ ...prev, [name]: numValue }));
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    }
   };
   
   const handleRadioChange = (value: string) => {
-    setFormData((prev) => ({ ...prev, foodTag: value })); // Changed from foodType to foodTag
+    setFormData((prev) => ({ ...prev, foodTag: value }));
   };
   
   const handleSubmit = async (e: React.FormEvent) => {
@@ -51,11 +58,11 @@ const DonateFood = () => {
         toast.success("Food donation submitted successfully!");
         setFormData({
           foodName: "",
-          foodTag: "veg", // Changed from foodType to foodTag
-          quantity: "",
+          foodTag: "veg",
+          quantity: 0, // Reset to 0
           expiryDate: "",
           address: "",
-          email: "", // Reset email field
+          email: "",
         });
         
         // Navigate to the food items page to see all donations
@@ -96,9 +103,12 @@ const DonateFood = () => {
               <Input
                 id="quantity"
                 name="quantity"
-                placeholder="e.g., 5 kg, 10 packets, 3 boxes"
-                value={formData.quantity}
+                type="number"
+                placeholder="e.g., 5"
+                value={formData.quantity === 0 ? '' : formData.quantity}
                 onChange={handleChange}
+                min="0"
+                step="0.1"
                 required
               />
             </div>

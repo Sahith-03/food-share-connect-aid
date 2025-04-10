@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Search, Filter } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -34,6 +34,19 @@ const FoodItems = () => {
     } catch (error) {
       return dateString;
     }
+  };
+  
+  // Format quantity to display appropriately
+  const formatQuantity = (quantity: number | string) => {
+    // Handle case where API might return string despite our interface
+    const numQuantity = typeof quantity === 'string' ? parseFloat(quantity) : quantity;
+    
+    if (isNaN(numQuantity)) {
+      return 'N/A';
+    }
+    
+    // Display quantity with at most 1 decimal place when needed
+    return Number.isInteger(numQuantity) ? numQuantity.toString() : numQuantity.toFixed(1);
   };
   
   return (
@@ -105,7 +118,7 @@ const FoodItems = () => {
                 <div className="space-y-2">
                   <div className="flex justify-between">
                     <span className="text-sm text-muted-foreground">Quantity:</span>
-                    <span className="text-sm font-medium">{item.quantity}</span>
+                    <span className="text-sm font-medium">{formatQuantity(item.quantity)}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-sm text-muted-foreground">Expiry Date:</span>
