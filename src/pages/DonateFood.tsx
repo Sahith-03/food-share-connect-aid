@@ -52,6 +52,7 @@ const DonateFood = () => {
     setIsSubmitting(true);
     
     try {
+      console.log("Submitting donation:", formData);
       const success = await donateFood(formData);
       
       if (success) {
@@ -125,7 +126,7 @@ const DonateFood = () => {
                   <Label htmlFor="veg">Vegetarian</Label>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="non-veg" id="non-veg" />
+                  <RadioGroupItem value="nonveg" id="non-veg" />
                   <Label htmlFor="non-veg">Non-Vegetarian</Label>
                 </div>
               </RadioGroup>

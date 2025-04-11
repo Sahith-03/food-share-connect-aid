@@ -21,7 +21,7 @@ const FoodItems = () => {
   // Filter items based on search and type filter
   const filteredItems = foodItems.filter(item => {
     const matchesSearch = item.foodName.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesType = typeFilter === "all" || item.foodType === typeFilter;
+    const matchesType = typeFilter === "all" || item.foodTag === typeFilter;
     
     return matchesSearch && matchesType;
   });
@@ -77,7 +77,7 @@ const FoodItems = () => {
             <SelectContent>
               <SelectItem value="all">All Types</SelectItem>
               <SelectItem value="veg">Vegetarian</SelectItem>
-              <SelectItem value="non-veg">Non-Vegetarian</SelectItem>
+              <SelectItem value="nonveg">Non-Vegetarian</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -108,9 +108,9 @@ const FoodItems = () => {
                 <CardTitle className="flex justify-between items-start">
                   <span>{item.foodName}</span>
                   <span className={`inline-block px-2 py-1 text-xs rounded-full ${
-                    item.foodType === 'veg' ? 'bg-green-100 text-green-800' : 'bg-orange-100 text-orange-800'
+                    item.foodTag === 'veg' ? 'bg-green-100 text-green-800' : 'bg-orange-100 text-orange-800'
                   }`}>
-                    {item.foodType === 'veg' ? 'Vegetarian' : 'Non-Vegetarian'}
+                    {item.foodTag === 'veg' ? 'Vegetarian' : 'Non-Vegetarian'}
                   </span>
                 </CardTitle>
               </CardHeader>
@@ -125,8 +125,8 @@ const FoodItems = () => {
                     <span className="text-sm font-medium">{formatDate(item.expiryDate)}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-sm text-muted-foreground">Donated On:</span>
-                    <span className="text-sm font-medium">{formatDate(item.donationDate)}</span>
+                    <span className="text-sm text-muted-foreground">Address</span>
+                    <span className="text-sm font-medium">{item.address}</span>
                   </div>
                 </div>
               </CardContent>

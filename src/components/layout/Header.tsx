@@ -75,10 +75,6 @@ export function Header() {
         <div className="ml-auto flex items-center space-x-4">
           {user ? (
             <>
-              <Button variant="ghost" size="icon">
-                <Bell className="h-5 w-5" />
-                <span className="sr-only">Notifications</span>
-              </Button>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" size="icon" className="rounded-full">

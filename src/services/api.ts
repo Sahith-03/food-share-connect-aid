@@ -1,4 +1,5 @@
 
+import axios from "axios";
 import { toast } from "sonner";
 
 // Define types for API responses and requests
@@ -6,7 +7,7 @@ export interface FoodItem {
   _id: string;
   foodName: string;
   quantity: number; // Changed from string to number
-  foodType: string;
+  foodTag: string;
   expiryDate: string;
   address: string;
   donationDate: string;
@@ -36,13 +37,13 @@ export interface RegisterRequest {
 export interface FoodDonationRequest {
   foodName: string;
   foodTag: string;
-  quantity: number; // Changed from string to number
+  quantity: number;
   expiryDate: string;
   address: string;
   email: string;
 }
 
-const API_BASE_URL = "https://food-donation-backend-9z3j.onrender.com/api";
+const API_BASE_URL = "https://food-donation-backend-9z3j.onrender.com/api"; // Replace with your actual API base URL
 
 // Error handling function
 const handleApiError = (error: any): string => {
@@ -57,12 +58,12 @@ const handleApiError = (error: any): string => {
 export const getAllFoods = async (): Promise<FoodItem[]> => {
   try {
     const response = await fetch(`${API_BASE_URL}/allfoods`);
-    
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
     
     const data = await response.json();
+    console.log("All-foods:",data)
     return data;
   } catch (error) {
     const errorMessage = handleApiError(error);
@@ -72,35 +73,15 @@ export const getAllFoods = async (): Promise<FoodItem[]> => {
 };
 
 // Donate food
-export const donateFood = async (foodData: FoodDonationRequest): Promise<boolean> => {
+export const donateFood = async (formData: FoodDonationRequest): Promise<boolean> => {
   try {
-    const token = localStorage.getItem("token");
-    
-    if (!token) {
-      toast.error("You must be logged in to donate food");
-      return false;
+      const response = await axios.post(`${API_BASE_URL}/fooddonation`, {formData});
+      console.log(response.data);
+      alert("Successfully donated food!");
+      return response.data;
+    } catch (error) {
+      console.error(error);
     }
-    
-    const response = await fetch(`${API_BASE_URL}/fooddonation`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
-      },
-      body: JSON.stringify(foodData)
-    });
-    
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-    
-    const data = await response.json();
-    return true;
-  } catch (error) {
-    const errorMessage = handleApiError(error);
-    toast.error(errorMessage);
-    return false;
-  }
 };
 
 // User login
@@ -119,7 +100,15 @@ export const login = async (credentials: LoginRequest): Promise<LoginResponse | 
     }
     
     const data = await response.json();
-    return data;
+    const userData = {
+      user:{
+        name:data.existingUser.name,
+        email: data.existingUser.email,
+        _id: data.existingUser._id
+      },
+      token: data.token
+    }
+    return userData;
   } catch (error) {
     const errorMessage = handleApiError(error);
     toast.error(errorMessage);
