@@ -11,6 +11,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import FoodItems from "./pages/FoodItems";
 import DonateFood from "./pages/DonateFood";
+import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import Layout from "./components/layout/Layout";
 
@@ -27,7 +28,7 @@ const App = () => (
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/" element={<Layout />}>
-              <Route index element={<Navigate to="/donate" replace />} />
+              <Route index element={<Home />} />
               <Route path="donate" element={<DonateFood />} />
               <Route path="food-items" element={<FoodItems />} />
             </Route>

@@ -10,7 +10,7 @@ const Index = () => {
     const userString = localStorage.getItem("user");
     
     if (userString) {
-      navigate("/"); // Direct to dashboard for either role
+      navigate("/"); // Direct to home page for logged in users
     } else {
       navigate("/login"); // Redirect to login if not logged in
     }
