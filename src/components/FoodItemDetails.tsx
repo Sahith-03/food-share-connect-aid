@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Eye, Trash2 } from "lucide-react";
+import { Eye, Salad, Trash2 } from "lucide-react";
 import { 
   Dialog, 
   DialogContent, 
@@ -86,20 +86,17 @@ const FoodItemDetails = ({ item }: FoodItemDetailsProps) => {
               <p className="text-sm text-muted-foreground">{formatDate(item.expiryDate)}</p>
             </div>
             <div className="space-y-1">
-              <p className="text-sm font-medium">Donation Date:</p>
-              <p className="text-sm text-muted-foreground">{formatDate(item.donationDate || '')}</p>
+              <p className="text-sm font-medium">Pickup Address:</p>
+              <p className="text-sm text-muted-foreground">{item.address}</p>
             </div>
           </div>
-          <div className="space-y-1">
-            <p className="text-sm font-medium">Pickup Address:</p>
-            <p className="text-sm text-muted-foreground">{item.address}</p>
-          </div>
+          
         </div>
         <DialogFooter className="flex justify-between">
           <AlertDialog>
             <AlertDialogTrigger asChild>
-              <Button variant="destructive" disabled={isDeleting}>
-                <Trash2 className="mr-1 h-4 w-4" /> Delete
+              <Button disabled={isDeleting}>
+                <Salad className="mr-1 h-4 w-4" /> Collect
               </Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
@@ -112,7 +109,7 @@ const FoodItemDetails = ({ item }: FoodItemDetailsProps) => {
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
                 <AlertDialogAction onClick={handleDelete} disabled={isDeleting}>
-                  {isDeleting ? "Deleting..." : "Delete"}
+                  {isDeleting ? "Collecting..." : "Collect"}
                 </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
