@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Package, ChefHat, Clock, MapPin } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import FoodItemDetails from "@/components/FoodItemDetails";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -128,9 +129,9 @@ const Home = () => {
                   <CardTitle className="flex justify-between items-start">
                     <span>{item.foodName}</span>
                     <span className={`inline-block px-2 py-1 text-xs rounded-full ${
-                      item.foodType === 'veg' ? 'bg-green-100 text-green-800' : 'bg-orange-100 text-orange-800'
+                      item.foodTag === 'veg' ? 'bg-green-100 text-green-800' : 'bg-orange-100 text-orange-800'
                     }`}>
-                      {item.foodType === 'veg' ? 'Vegetarian' : 'Non-Vegetarian'}
+                      {item.foodTag === 'veg' ? 'Vegetarian' : 'Non-Vegetarian'}
                     </span>
                   </CardTitle>
                 </CardHeader>
@@ -146,6 +147,9 @@ const Home = () => {
                     </div>
                   </div>
                 </CardContent>
+                <CardFooter>
+                  <FoodItemDetails item={item} />
+                </CardFooter>
               </Card>
             ))}
           </div>

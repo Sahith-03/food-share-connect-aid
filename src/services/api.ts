@@ -1,4 +1,3 @@
-
 import axios from "axios";
 import { toast } from "sonner";
 
@@ -6,7 +5,7 @@ import { toast } from "sonner";
 export interface FoodItem {
   _id: string;
   foodName: string;
-  quantity: number; // Changed from string to number
+  quantity: number;
   foodTag: string;
   expiryDate: string;
   address: string;
@@ -77,11 +76,42 @@ export const donateFood = async (formData: FoodDonationRequest): Promise<boolean
   try {
       const response = await axios.post(`${API_BASE_URL}/fooddonation`, {formData});
       console.log(response.data);
-      alert("Successfully donated food!");
-      return response.data;
+      toast.success("Successfully donated food!");
+      return true;
     } catch (error) {
-      console.error(error);
+      const errorMessage = handleApiError(error);
+      toast.error(errorMessage);
+      return false;
     }
+};
+
+// Delete food donation
+export const deleteFoodDonation = async (id: string): Promise<boolean> => {
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      toast.error("You must be logged in to delete donations");
+      return false;
+    }
+    
+    const response = await fetch(`${API_BASE_URL}/fooddonation/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    
+    toast.success("Food donation deleted successfully");
+    return true;
+  } catch (error) {
+    const errorMessage = handleApiError(error);
+    toast.error(errorMessage);
+    return false;
+  }
 };
 
 // User login

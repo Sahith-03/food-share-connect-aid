@@ -4,16 +4,16 @@ import { Search, Filter } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
 import { FoodItem, getAllFoods } from "@/services/api";
 import { useQuery } from "@tanstack/react-query";
+import FoodItemDetails from "@/components/FoodItemDetails";
 
 const FoodItems = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [typeFilter, setTypeFilter] = useState("all");
   
   // Use React Query to fetch and cache food items
-  const { data: foodItems = [], isLoading, error } = useQuery({
+  const { data: foodItems = [], isLoading, error, refetch } = useQuery({
     queryKey: ['foods'],
     queryFn: getAllFoods
   });
@@ -126,12 +126,12 @@ const FoodItems = () => {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-sm text-muted-foreground">Address</span>
-                    <span className="text-sm font-medium">{item.address}</span>
+                    <span className="text-sm font-medium">{item.address.substring(0, 30)}</span>
                   </div>
                 </div>
               </CardContent>
               <CardFooter>
-                <Button variant="outline" className="w-full">View Details</Button>
+                <FoodItemDetails item={item} />
               </CardFooter>
             </Card>
           ))}
